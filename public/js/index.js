@@ -12,4 +12,11 @@ socket.on('disconnect', function() {
 socket.on('newMessage', function(message) {
   console.log('From: '+message.from);
   console.log('Text: '+message.text);
+  console.log('Created: '+message.createdAt);
+});
+
+socket.emit('createMessage', {
+  from: 'Anshul',
+  text: 'Hi',
+  createdAt: new Date().getTime()
 });
