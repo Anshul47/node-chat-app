@@ -10,13 +10,24 @@ socket.on('disconnect', function() {
 });
 
 socket.on('newMessage', function(message) {
-  console.log('From: '+message.from);
-  console.log('Text: '+message.text);
-  console.log('Created: '+message.createdAt);
+  // console.log('From: '+message.from);
+  // console.log('Text: '+message.text);
+  // console.log('Created: '+message.createdAt);
+  var li = $('<li></li>');
+  li.text(`${message.from}: ${message.text}`);
+  $('#messages').append(li);
 });
 
-socket.emit('createMessage', {
-  from: 'Anshul',
-  text: 'Hi',
-  createdAt: new Date().getTime()
-});
+$('#message-form').on('submit', function (e){
+  e.preventDefault();
+
+  socket.emit('createMessage', {
+    from: $('#username').val(),
+    text: $('#message').val(),
+    createdAt: new Date().getTime()
+  }, function (data) {
+    //console.log('Got it '+data.msg);
+    $('#message').val('');
+  });
+
+})
