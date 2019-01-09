@@ -14,21 +14,37 @@ io.on('connection', (socket) => {
     
     console.log('New user joined');
 
-    socket.emit('newMessage', generateMessage('Admin', 'Welcome to chat'));
+    /* ************************************************* */
 
+    socket.emit('newMessage', generateMessage('Admin', 'Welcome to chat'));
     socket.broadcast.emit('newMessage', generateMessage('Admin', 'New User Joined'));
 
-
+    /* ************************************************* */
 
     socket.on('createMessage', (message, callback) => {
 
         io.emit('newMessage', generateMessage(message.from, message.text));
-        //socket.broadcast.emit('newMessage', generateMessage(message.from, message.text));
         callback({
             err: 0,
             msg: 'Done'
         });
     });
+
+    /* ************************************************* */
+
+    socket.on('createLocationMessage', (message, callback) => {
+        var userLocationObj = {
+            lat: message.locationObj.lat,
+            lng: message.locationObj.lng
+        }
+        io.emit('newLocationMessage', generateMessage(message.from, userLocationObj));
+        callback({
+            err: 0,
+            msg: 'Done'
+        });
+    });
+
+    /* ************************************************* */
 
     socket.on('disconnect', () => {
         console.log('User was Disconnected to server')
