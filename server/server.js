@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 const path = require('path');
+const moment = require('moment');
 const socketIO = require('socket.io');
 const publicPath = path.join(__dirname, '../public');
 const {generateMessage} = require('./utils/message');
@@ -14,12 +15,12 @@ io.on('connection', (socket) => {
     
     console.log('New user joined');
 
-    /* ************************************************* */
+    /* ********************** New User Join Chat *************************** */
 
     socket.emit('newMessage', generateMessage('Admin', 'Welcome to chat'));
     socket.broadcast.emit('newMessage', generateMessage('Admin', 'New User Joined'));
 
-    /* ************************************************* */
+    /* ********************** User Send Chat *************************** */
 
     socket.on('createMessage', (message, callback) => {
 
@@ -30,7 +31,7 @@ io.on('connection', (socket) => {
         });
     });
 
-    /* ************************************************* */
+    /* ********************** User Send Location *************************** */
 
     socket.on('createLocationMessage', (message, callback) => {
         var userLocationObj = {
