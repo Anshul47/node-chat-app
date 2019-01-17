@@ -23,7 +23,7 @@ socket.on('connect', function() {
       alert(err);
       window.location.href = '/';
     }else{
-
+      $('#username').val(param.name);
     }
   });
 

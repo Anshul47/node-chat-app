@@ -43,8 +43,8 @@ io.on('connection', (socket) => {
     /* ********************** User Send Chat *************************** */
 
     socket.on('createMessage', (message, callback) => {
-
-        io.emit('newMessage', generateMessage(message.from, message.text));
+        var user = users.getUser(socket.id);
+        io.to(user.room).emit('newMessage', generateMessage(message.from, message.text));
         callback({
             err: 0,
             msg: 'Done'
@@ -58,7 +58,8 @@ io.on('connection', (socket) => {
             lat: message.locationObj.lat,
             lng: message.locationObj.lng
         }
-        io.emit('newLocationMessage', generateMessage(message.from, userLocationObj));
+        var user = users.getUser(socket.id);
+        io.to(user.room).emit('newLocationMessage', generateMessage(message.from, userLocationObj));
         callback({
             err: 0,
             msg: 'Done'
