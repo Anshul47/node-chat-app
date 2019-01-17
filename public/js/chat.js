@@ -17,11 +17,30 @@ function scrollToBottom() {
 }
 
 socket.on('connect', function() {
-  console.log('User Connected to server');
+  var param = $.deparam(window.location.search);
+  socket.emit('join', param, function(err) {
+    if (err){
+      alert(err);
+      window.location.href = '/';
+    }else{
+
+    }
+  });
+
 });
 
 socket.on('disconnect', function() {
   console.log('User Disconnected to server');
+});
+
+socket.on('updateUserList', function(users) {
+
+  var ol = $('<ol></ol>');
+  users.forEach(function(user) {
+    ol.append($('<li></li>').text(user));
+  });
+  $('#users').html(ol);
+
 });
 
 /* ********************** New Chat Recive *************************** */
